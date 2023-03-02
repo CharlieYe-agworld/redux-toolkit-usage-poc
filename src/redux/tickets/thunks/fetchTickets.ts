@@ -8,7 +8,7 @@ const fetchTickets = createAsyncThunk('tickets/fetch', async () => {
 
   const response = await apiIndexTickets();
 
-  // the purpose is to check the isLoading state
+  // the purpose is to check the isLoading state in UI
   await pause(2000);
 
   return response;
