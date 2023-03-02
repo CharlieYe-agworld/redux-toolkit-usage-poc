@@ -1,11 +1,9 @@
-import { configureStore } from '../../store';
 import { dummyTicket } from "../__dummy__/tickets";
 import { fetchTickets } from "../thunks/fetchTickets";
 import { ticketsReducer } from "./ticketsSlice";
+import { store } from "../../store";
 
 describe("tickets state test", () => {
-  const store = configureStore({});
-
   const INIT_STATE = {
     tickets: [],
     isLoading: false,

@@ -1,21 +1,19 @@
-import { applyMiddleware, compose, createStore } from 'redux';
-import reducers from './reducers';
-import reduxThunk from 'redux-thunk';
+import { configureStore } from "@reduxjs/toolkit";
+import { blogsApi } from "./blogs/api/blogsApi";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { ticketsReducer } from "./tickets/slices/ticketsSlice";
 
-declare global {
-    interface Window {
-        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-    }
-}
+export const store = configureStore({
+  reducer: {
+    tickets: ticketsReducer,
+    [blogsApi.reducerPath]: blogsApi.reducer,
+  },
+  middleware: getDefaultMiddleware =>
+      getDefaultMiddleware()
+          .concat(blogsApi.middleware)
+});
 
-const middlewares = [reduxThunk];
+setupListeners(store.dispatch);
 
-export function configureStore(initialState: {}) {
-
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-    return createStore(reducers, initialState, composeEnhancers(applyMiddleware(...middlewares)));
-}
-
-export type RootState = ReturnType<typeof reducers>;
+export type RootState = ReturnType<typeof store.getState>;
 
